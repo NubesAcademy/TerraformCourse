@@ -1,20 +1,30 @@
-variable "default_region" {
-  description = "Default region to deploy our infrastructure"
+variable "aws_region" {
+  description = "Default region to deploy infrastructure"
 }
 
-variable "vpc_cidr" {
-  description = "Virtual Private Cloud Subnet"
+variable "aws_vpc_cidr" {
+  description = "AWS VPC CIDR block"
+  type = string
   default = "10.1.0.0/16"
 }
 
-variable "vpc_az_count" {
+variable "aws_vpc_azs" {
   type = number
-  description = "In which AZs we want to deploy our infrastructure"
+  description = "Count of AWS Availability Zones to deploy infrastructure"
 }
 
-variable "vpc_db_subnets" {
+variable "aws_vpc_db_subnets" {
   type = list(string)
-  description = ""
+  description = "AWS VPC list of subnets to deploy database resources"
+}
+
+variable "aws_ami" {
+  description = "AWS AMI for EC2 Instances with application"
+  default = "amzn-ami-hvm-*-x86_64-ebs"
+}
+
+variable "aws_ec2_type" {
+  description = "Default type of EC2 Instances for application"
 }
 
 variable "mandatory_tags" {

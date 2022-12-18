@@ -1,8 +1,10 @@
-default_region = "eu-west-1"
+aws_region = "eu-west-1"
 
-vpc_cidr = "10.2.0.0/16"
-vpc_az_count = 2
-vpc_db_subnets = ["10.2.50.0/24", "10.2.51.0/24"]
+aws_vpc_cidr = "10.2.0.0/16"
+aws_vpc_azs = 2
+aws_vpc_db_subnets = ["10.2.50.0/24", "10.2.51.0/24"]
+
+aws_ec2_type = "t3.micro"
 
 mandatory_tags = {
   "env"     = "dev"
