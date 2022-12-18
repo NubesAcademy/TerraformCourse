@@ -35,6 +35,14 @@ variable "aws_app_ec2_type" {
   description = "Default type of EC2 Instances for application"
 }
 
+variable "aws_db_type" {
+  description = "Default type of AWS RDS Postgresql"
+}
+
+variable "aws_db_name" {
+  description = "Default name of AWS RDS Postgresql"
+}
+
 variable "mandatory_tags" {
   type = map(string)
   description = "Mandatory TAGs for all AWS resources"

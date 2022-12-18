@@ -7,6 +7,8 @@ aws_vpc_db_subnets = ["10.2.50.0/24", "10.2.51.0/24"]
 aws_app_ec2_type = "t3.micro"
 aws_bastion_ami = "ami-05e786af422f8082a"
 
+aws_db_type = "db.t3.micro"
+
 mandatory_tags = {
   "env"     = "dev"
   "owner"   = "Oleksiy Pototskyy"
