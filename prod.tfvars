@@ -1,3 +1,3 @@
 bucket="mastering-terraform-state-bucket"
-key="infra.tfstate"
+key="prod.tfstate"
 region="eu-west-1"
