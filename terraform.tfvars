@@ -4,7 +4,8 @@ aws_vpc_cidr = "10.2.0.0/16"
 aws_vpc_azs = 2
 aws_vpc_db_subnets = ["10.2.50.0/24", "10.2.51.0/24"]
 
-aws_ec2_type = "t3.micro"
+aws_app_ec2_type = "t3.micro"
+aws_bastion_ami = "ami-05e786af422f8082a"
 
 mandatory_tags = {
   "env"     = "dev"

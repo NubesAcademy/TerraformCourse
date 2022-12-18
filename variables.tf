@@ -18,12 +18,20 @@ variable "aws_vpc_db_subnets" {
   description = "AWS VPC list of subnets to deploy database resources"
 }
 
-variable "aws_ami" {
-  description = "AWS AMI for EC2 Instances with application"
+variable "aws_bastion_ami" {
+  description = "ID of AWS AMI for Bastion EC2 Instance"
+}
+
+variable "aws_bastion_ec2_type" {
+  description = "Default type of EC2 Instances for bastion host"
+}
+
+variable "aws_app_ami" {
+  description = "Name of AWS AMI for EC2 Instances with application"
   default = "amzn-ami-hvm-*-x86_64-ebs"
 }
 
-variable "aws_ec2_type" {
+variable "aws_app_ec2_type" {
   description = "Default type of EC2 Instances for application"
 }
 
