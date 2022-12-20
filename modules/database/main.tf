@@ -30,6 +30,16 @@ resource "random_password" "mysql" {
   override_special = "!#$%^&*()-_=+[]{}<>:?"
 }
 
+resource "aws_db_subnet_group" "mysql" {
+  name       = "mysql"
+  subnet_ids = var.aws_vpc_db_subnets
+
+  tags = merge(
+    tomap({"Name" = "Mastering Terraform Database"}),
+    var.mandatory_tags
+  )
+}
+
 resource "aws_rds_cluster" "mysql" {
   engine                 = "aurora-mysql"
   engine_version         = "5.7.mysql_aurora.2.07.1"
@@ -42,7 +52,16 @@ resource "aws_rds_cluster" "mysql" {
   # attach the security group
   vpc_security_group_ids = [aws_security_group.mysql.id]
   # deploy to the subnets
-  db_subnet_group_name   = var.aws_vpc_db_subnets
+  db_subnet_group_name   = aws_db_subnet_group.mysql.id
+
+  tags = merge(
+    tomap({"Name" = "Mastering Terraform Database"}),
+    var.mandatory_tags
+  )
+  tags_all = merge(
+    tomap({"Name" = "Mastering Terraform Database"}),
+    var.mandatory_tags
+  )
 }
 
 resource "aws_secretsmanager_secret" "mysql" {

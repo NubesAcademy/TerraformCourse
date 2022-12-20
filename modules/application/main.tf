@@ -61,7 +61,7 @@ resource "aws_launch_configuration" "app" {
   name_prefix     = "mastering-terraform-aws-asg-"
   image_id        = data.aws_ami.amazon-linux.id
   instance_type   = var.aws_ec2_type
-  user_data       = file("user-data.sh")
+  user_data       = file("${path.module}/user-data.sh")
   security_groups = [aws_security_group.app_instance.id]
 
   lifecycle {
@@ -120,7 +120,7 @@ resource "aws_lb_listener" "app" {
   }
 }
 
-resource "aws_autoscaling_attachment" "terramino" {
+resource "aws_autoscaling_attachment" "app" {
   autoscaling_group_name = aws_autoscaling_group.app.id
-  lb_target_group_arn   = aws_lb_target_group.app.arn
+  alb_target_group_arn   = aws_lb_target_group.app.arn
 }
