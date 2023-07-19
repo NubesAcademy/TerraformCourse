@@ -19,3 +19,7 @@ variable "mandatory_tags" {
   type = map(string)
   description = "Mandatory TAGs for all AWS resources"
 }
+
+variable "domain_zone_id" {
+  description = "Route53 Zone ID"
+}

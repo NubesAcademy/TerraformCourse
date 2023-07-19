@@ -7,10 +7,10 @@ resource "aws_s3_bucket" "s3-app" {
   )
 }
 
-resource "aws_s3_bucket_acl" "s3-app" {
-  bucket = aws_s3_bucket.s3-app.id
-  acl    = "private"
-}
+#resource "aws_s3_bucket_acl" "s3-app" {
+#  bucket = aws_s3_bucket.s3-app.id
+#  acl    = "private"
+#}
 
 resource "aws_vpc_endpoint" "s3-app" {
   service_name = "com.amazonaws.${var.aws_region}.s3"

@@ -42,7 +42,7 @@ resource "aws_db_subnet_group" "mysql" {
 
 resource "aws_rds_cluster" "mysql" {
   engine                 = "aurora-mysql"
-  engine_version         = "5.7.mysql_aurora.2.07.1"
+#  engine_version         = "5.7.mysql_aurora.2.07.1"
   engine_mode            = "serverless"
   database_name          = var.aws_db_name
   master_username        = "admin"

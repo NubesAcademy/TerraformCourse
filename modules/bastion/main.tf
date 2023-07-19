@@ -1,6 +1,16 @@
 resource "aws_key_pair" "bastion" {
   key_name = "bastion-ssh-key"
-  public_key = file("${path.module}/id_rsa.pub")
+  public_key = file("${path.module}/../../bastion_id_rsa.pub")
+}
+
+resource "tls_private_key" "app-rsa-key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "aws_key_pair" "application" {
+  key_name = "app-ssh-key"
+  public_key = tls_private_key.app-rsa-key.public_key_openssh
 }
 
 resource "aws_security_group" "bastion" {
@@ -40,6 +50,8 @@ resource "aws_instance" "bastion" {
     delete_on_termination = true
   }
 
+  user_data = templatefile("${path.module}/user-data.sh", { ssh_private_key = tls_private_key.app-rsa-key.private_key_pem })
+
   tags = merge(
     tomap({"Name" = "Mastering Terraform Bastion"}),
     var.mandatory_tags
@@ -58,5 +70,13 @@ resource "aws_eip" "bastion" {
     tomap({"Name" = "Mastering Terraform Bastion"}),
     var.mandatory_tags
   )
+}
+
+resource "aws_route53_record" "bastion-record-A" {
+  zone_id = var.domain_zone_id
+  name = "bastion"
+  type = "A"
+  ttl = "300"
+  records = [aws_eip.bastion.public_ip]
 }
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-yum update -y
+yum update -y && yum upgrade -y
 yum -y remove httpd
 yum -y remove httpd-tools
 yum install -y httpd24 php72 mysql57-server php72-mysqlnd

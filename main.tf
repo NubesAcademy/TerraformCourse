@@ -53,6 +53,7 @@ module "bastion_host" {
   aws_ec2_type = var.aws_bastion_ec2_type
   aws_vpc_public_subnets = module.vpc.public_subnets
   mandatory_tags = var.mandatory_tags
+  domain_zone_id = module.dns.domain_zone_id
 }
 
 module "storage" {
@@ -74,6 +75,10 @@ module "application" {
   aws_ami = var.aws_app_ami
   aws_ec2_type = var.aws_app_ec2_type
   mandatory_tags = var.mandatory_tags
+  bastion_security_group_id = module.bastion_host.bastion_security_group_id
+  app_key_pair_name = module.bastion_host.app_key_pair_name
+  domain_zone_id = module.dns.domain_zone_id
+  ssl_certificate_arn = module.ssl_certificate.ssl_certificate_arn
 }
 
 module "database" {

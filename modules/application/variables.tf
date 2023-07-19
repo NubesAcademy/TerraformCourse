@@ -25,3 +25,19 @@ variable "mandatory_tags" {
   type = map(string)
   description = "Mandatory TAGs for all AWS resources"
 }
+
+variable "bastion_security_group_id" {
+  description = "Bastion Security Group ID"
+}
+
+variable "app_key_pair_name" {
+  description = "AWS Key Pair Name"
+}
+
+variable "domain_zone_id" {
+  description = "Route53 Zone ID"
+}
+
+variable "ssl_certificate_arn" {
+  description = "SSL Certificate ARN"
+}

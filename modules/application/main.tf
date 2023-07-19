@@ -41,6 +41,13 @@ resource "aws_security_group" "app_instance" {
   description = "Mastering Terraform Security Group for EC2 Instances"
 
   ingress {
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
+    security_groups = [var.bastion_security_group_id]
+  }
+
+  ingress {
     from_port       = 80
     to_port         = 80
     protocol        = "tcp"
@@ -48,21 +55,22 @@ resource "aws_security_group" "app_instance" {
   }
 
   egress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
-    security_groups = [aws_security_group.app_lb.id]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   vpc_id = var.aws_vpc_id
 }
 
-resource "aws_launch_configuration" "app" {
-  name_prefix     = "mastering-terraform-aws-asg-"
-  image_id        = data.aws_ami.amazon-linux.id
-  instance_type   = var.aws_ec2_type
-  user_data       = file("${path.module}/user-data.sh")
-  security_groups = [aws_security_group.app_instance.id]
+resource "aws_launch_template" "app" {
+  name_prefix = "mastering-terraform-aws-asg-"
+  image_id = data.aws_ami.amazon-linux.id
+  instance_type = var.aws_ec2_type
+  user_data = base64encode(file("${path.module}/user-data.sh"))
+  key_name = var.app_key_pair_name
+  vpc_security_group_ids = [aws_security_group.app_instance.id]
 
   lifecycle {
     create_before_destroy = true
@@ -74,8 +82,13 @@ resource "aws_autoscaling_group" "app" {
   min_size             = 1
   max_size             = 3
   desired_capacity     = 1
-  launch_configuration = aws_launch_configuration.app.name
+  launch_template {
+    id = aws_launch_template.app.id
+    version = "$Latest"
+  }
   vpc_zone_identifier  = var.aws_vpc_private_subnets
+
+  target_group_arns = ["${aws_lb_target_group.app.arn}"]
 
   tag {
     key                 = "Name"
@@ -109,10 +122,11 @@ resource "aws_lb_target_group" "app" {
   vpc_id   = var.aws_vpc_id
 }
 
-resource "aws_lb_listener" "app" {
+resource "aws_lb_listener" "app-https" {
   load_balancer_arn = aws_lb.app.arn
-  port              = "80"
-  protocol          = "HTTP"
+  port = "443"
+  protocol = "HTTPS"
+  certificate_arn = var.ssl_certificate_arn
 
   default_action {
     type             = "forward"
@@ -120,7 +134,30 @@ resource "aws_lb_listener" "app" {
   }
 }
 
-resource "aws_autoscaling_attachment" "app" {
-  autoscaling_group_name = aws_autoscaling_group.app.id
-  alb_target_group_arn   = aws_lb_target_group.app.arn
+resource "aws_lb_listener" "app-http" {
+  load_balancer_arn = aws_lb.app.arn
+  port              = "80"
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "redirect"
+
+    redirect {
+      port = "443"
+      protocol = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
+
+resource "aws_route53_record" "lb-record-ALIAS" {
+  zone_id = var.domain_zone_id
+  name    = "app"
+  type    = "A"
+
+  alias {
+    name                   = "${aws_lb.app.dns_name}"
+    zone_id                = "${aws_lb.app.zone_id}"
+    evaluate_target_health = true
+  }
 }
