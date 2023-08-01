@@ -17,9 +17,8 @@ domain_name = "terraform.nubes.academy"
 s3_bucket_name = "mastering-terraform-project"
 
 mandatory_tags = {
-  "env"     = "dev"
   "owner"   = "Oleksiy Pototskyy"
-  "email"   = "alexei.potocki@gmail.com"
-  "website" = "https://nubes.academy"
-  "project" = "Mastering Terraform"
+  "email"   = "oleksiy@pototskyy.net"
+  "website" = "https://www.nubes.academy"
+  "project" = "Mastering Terraform: from Zero to Certified Professional"
 }
