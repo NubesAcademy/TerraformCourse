@@ -1,0 +1,6 @@
+resource "aws_instance" "example" {
+  #...
+  user_data = file("${path.module}/user_data.sh")
+  #...
+}
+
