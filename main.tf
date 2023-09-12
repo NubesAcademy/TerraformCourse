@@ -91,9 +91,3 @@ module "database" {
   aws_db_name = var.aws_db_name
   mandatory_tags = var.mandatory_tags
 }
-#
-#module "cdn" {
-#  source = "./modules/cdn"
-#
-#
-#}
