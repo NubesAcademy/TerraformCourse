@@ -1,0 +1,12 @@
+import "tfplan"
+
+allowed_regions = ["us-west-2"]
+
+main = rule {
+    all tfplan.resources as _, instances {
+        all instances as _, r {
+            r.applies and (r.addr.module is "module.provider" and r.addr.resource is "aws_instance") implies
+            r.change.after.region in allowed_regions
+        }
+    }
+}
