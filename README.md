@@ -71,12 +71,17 @@ terraform destroy -var-file=env-prod.tfvars
 
 This repository includes configuration files and scripts that will help you understand and implement various Terraform concepts covered in the course. By following along with the course videos, you'll learn how to:
 
-- Set up and configure Terraform
-- Write and manage Terraform configuration files
-- Use variables and outputs
-- Manage different environments (dev and prod)
-- Apply best practices for Terraform usage
-- Prepare for the HashiCorp Terraform certification exam
+- Getting started & settings up your lab
+- Take the first steps with Terraform 
+- Understand the Core Terraform Workflow 
+- Implement and maintain Terraform State files 
+- Work with Terraform built-in functions 
+- Work with Terraform modules 
+- Work with Terraform provisioners 
+- Work with Terraform expressions 
+- Learn advanced Terraform topics 
+- Understand Terraform Cloud & Enterprise
+- Prepare for the last version of HashiCorp Associate Certification (003)
 
 ## Support
 
